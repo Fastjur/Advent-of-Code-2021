@@ -1,4 +1,7 @@
+import datetime
 import re
+
+start_time = datetime.datetime.now()
 
 f = open("input.txt", "r")
 lines = f.readlines()
@@ -57,3 +60,5 @@ while idx != to_win_last:
 
 res = drawn_number * sum([i for board in boards[idx] for i in board if i != -1])
 print(res)
+
+print("Running time:", datetime.datetime.now() - start_time)
