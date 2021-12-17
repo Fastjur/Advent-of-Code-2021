@@ -36,9 +36,11 @@ def get_valid_neighbours(point: (int, int)) -> {(int, int)}:
     return neighbours
 
 
-N = 100
 flash_count = 0
-for i in range(1, N + 1):
+N = 0
+while True:
+    N += 1
+    prev_flash_count = flash_count
     should_flash: [(int, int)] = []
     for (y, line) in enumerate(lines):
         for (x, curr) in enumerate(line):
@@ -61,7 +63,9 @@ for i in range(1, N + 1):
             if curr > 9:
                 lines[y][x] = 0
 
-    print(f"After step {i}:")
+    print(f"After step {N}:")
     show_grid()
 
-print("Flash count", flash_count)
+    if flash_count - prev_flash_count == num_octopuses:
+        print(f"Synchronised flash at {N}")
+        exit()
