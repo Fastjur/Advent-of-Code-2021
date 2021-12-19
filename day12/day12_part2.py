@@ -1,5 +1,4 @@
 from collections import defaultdict
-from pprint import pprint
 
 f = open("test.txt", "r")
 paths = [l.strip().split("-") for l in f.readlines()]
@@ -12,16 +11,18 @@ for path in paths:
 
 nodes = dict.fromkeys(map(lambda p: p, graph), 0)
 print(graph)
+print(nodes)
 
 paths = []
 
 
-def visit_neighbour(node, path, visited):
+def visit_neighbour(node, path, visited_twice):
+    print(node)
     path.append(node)
 
     if node == "end":
         paths.append(path)
-        print(",".join(path))
+        print(",".join(path) + "\n")
         return
 
     neighbours = graph[node]
@@ -30,17 +31,14 @@ def visit_neighbour(node, path, visited):
             continue
 
         if neighbour.islower():
-            visited[neighbour] += 1
-            count_visited_twice = 0
-            for n in visited:
-                if visited[n] > 1:
-                    count_visited_twice += 1
-            # if count_visited_twice > 1:
-                
+            if neighbour in path and visited_twice:
+                continue
+            if neighbour in path:
+                visited_twice = True
 
         new_path = path.copy()
-        visit_neighbour(neighbour, new_path, visited)
+        visit_neighbour(neighbour, new_path, visited_twice)
 
 
-visit_neighbour("start", [], nodes.copy())
+visit_neighbour("start", [], False)
 print(len(paths))
