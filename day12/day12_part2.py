@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-f = open("test.txt", "r")
+f = open("input.txt", "r")
 paths = [l.strip().split("-") for l in f.readlines()]
 
 graph = defaultdict(list)
@@ -17,6 +17,12 @@ paths = []
 
 
 def visit_neighbour(node, path, visited_twice):
+    if node.islower():
+        if node in path and visited_twice:
+            return
+        if node in path:
+            visited_twice = True
+
     print(node)
     path.append(node)
 
@@ -29,15 +35,9 @@ def visit_neighbour(node, path, visited_twice):
     for neighbour in neighbours:
         if neighbour == "start":
             continue
-
-        if neighbour.islower():
-            if neighbour in path and visited_twice:
-                continue
-            if neighbour in path:
-                visited_twice = True
-
         new_path = path.copy()
         visit_neighbour(neighbour, new_path, visited_twice)
+
 
 
 visit_neighbour("start", [], False)
